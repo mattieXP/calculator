@@ -7,17 +7,17 @@ Last project of The Odin Project's Foundation course. Create an online basic cal
 -add
 -subtract
 -multiply
--divide
-2. A calculator operation will consist of a number, an operator, and another number. For example, 3 + 5. Create three variables, one for each part of the operation. You’ll use these variables to update your display later.
-3. Create a new function operate that takes an operator and two numbers and then calls one of the above functions on the numbers.
-4. Create a basic HTML calculator with buttons for each digit and operator (including =).
+-divide *ok*
+2. A calculator operation will consist of a number, an operator, and another number. For example, 3 + 5. Create three variables, one for each part of the operation. You’ll use these variables to update your display later. *ok*
+3. Create a new function operate that takes an operator and two numbers and then calls one of the above functions on the numbers. *ok*
+4. Create a basic HTML calculator with buttons for each digit and operator (including =). *ok*
 Don’t worry about making them functional just yet.
 There should also be a display for the calculator. Go ahead and fill it with some dummy numbers so it looks correct.
-5. Add a “clear” button.
-6. Create the functions that update one of your number variables when the calculator’s digit buttons are clicked. Your calculator’s display should also update to reflect the value of that number variable.
-7. Make the calculator work! You’ll need to store the first and second numbers input by the user and then operate() on them when the user presses the = button, according to the operator that was selected between the numbers.
+5. Add a “clear” button. *ok*
+6. Create the functions that update one of your number variables when the calculator’s digit buttons are clicked. Your calculator’s display should also update to reflect the value of that number variable. *ok*
+7. Make the calculator work! You’ll need to store the first and second numbers input by the user and then operate() on them when the user presses the = button, according to the operator that was selected between the numbers. *ok*
 8. You should already have the code that can populate the display, so once operate has been called, update the display with the result of the operation.
-9. This is the hardest part of the project. You need to figure out how to store all the values and call the operate function with them. Don’t feel bad if it takes you a while to figure out the logic.
+9. This is the hardest part of the project. You need to figure out how to store all the values and call the operate function with them. Don’t feel bad if it takes you a while to figure out the logic. *ok*
 
 **Gotchas: watch out for and fix these bugs if they show up in your code:**
 1. Your calculator should not evaluate more than a single pair of numbers at a time. For example, this is how your calculator should function:
@@ -31,11 +31,26 @@ There should also be a display for the calculator. Go ahead and fill it with som
 2. You should round answers with long decimals so that they don’t overflow the display.
 Pressing = before entering all of the numbers or an operator could cause problems!
 Pressing “clear” should wipe out any existing data. Make sure the user is really starting fresh after pressing “clear”.
-3. Display a snarky error message if the user tries to divide by 0… and don’t let it crash your calculator!
+3. Display a snarky error message if the user tries to divide by 0… and don’t let it crash your calculator! *ok*
 4. Make sure that your calculator only runs an operation when supplied with two numbers and an operator by the user. Example: you enter a number (2), followed by an operator button (+). You press the operator button (+) a second consecutive time. Your calculator should not evaluate this as (2 + 2) and should not display the result (4). If consecutive operator buttons are pressed, your calculator should not run any evaluations, it should only take the last operator entered to be used for the next operation.
-5. When a result is displayed, pressing a new digit should clear the result and start a new calculation instead of appending the digit to the existing result. Check whether this is the case on your calculator!
+5. When a result is displayed, pressing a new digit should clear the result and start a new calculation instead of appending the digit to the existing result. Check whether this is the case on your calculator! *ok*
 
 **Extra credit**
-1. Users can get floating point numbers if they do the math required to get one, but they can’t type them in yet. Add a `.` button and let users input decimals! Make sure you don’t let them type more than one though, like: 12.3.56.5. Disable the `.` button if there’s already a decimal separator in the display.
-2. Add a “backspace” button, so the user can undo their last input if they click the wrong number.
+1. Users can get floating point numbers if they do the math required to get one, but they can’t type them in yet. Add a `.` button and let users input decimals! Make sure you don’t let them type more than one though, like: 12.3.56.5. Disable the `.` button if there’s already a decimal separator in the display. *ok*
+2. Add a “backspace” button, so the user can undo their last input if they click the wrong number. *ok*
 3. Add keyboard support!
+
+**Prototype Figma**
+https://www.figma.com/design/zk5T5Wpb8U5DP55GPBWfLF/Calculator?node-id=0-1&t=KdncCaIlAs7cAdfj-1
+
+**To do list**
+
+1. Bug fix:
+*ok*- correct clearAfter -> if I enter an operator, the precedent value is not cleared
+*ok*- why double operator appear when I take the total to continue calculation ?
+- Why firstNumber result desapear or reduce to 1 when a third operator enter on the display (thought the firstnumber value is good) ? -> *bug is in the no duplicate operator function*
+-Why 123+123- displays 24- (firstNumber returns 246 in the console) -> *same as previous*
+
+2. Add keyboard support
+3. Shorten long answers in order to avoid output-bar overflow
+4. Clean code

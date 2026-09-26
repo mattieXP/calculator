@@ -14,7 +14,7 @@ const multiply = ((a,b) => a * b);
 const divide = ((a,b) => a / b);
 const percent = ((a) => a / 100);
 
-//calculate ok
+//calculate - ok
 const calculate = ((a,b,c) => {
     a = Number(a);
     c = Number(c);
@@ -35,30 +35,39 @@ const calculate = ((a,b,c) => {
     }
     
 });
+// + limiter le nombre de charactères à 9 dans l'output bar en mettant des exposants
+    // pour les résultats plus longs
+
+const limitChar = function(output) {
+    output = String(output);
+    if (output.length > 9) {
+        output = Number(output);
+    return output.toExponential(2);
+    } else return output;
+}
 
 //Event listener
 inputs.forEach((input) => {
     input.addEventListener('click', (event) => {
     console.log(event.target.textContent);
     
-    //clearAfter ok
-    if (event.target.classList.contains("number") && clearAfter === true) {
+    //clearAfter - ok
+    if (clearAfter === true) {
         output.textContent = "";
         firstNumber = "";
         secondNumber ="";
         operator = "";
         isFirstNumber = true;
-    } else if (event.target.classList.contains("operator") && clearAfter === true) {
-        clearAfter = false;
     }
 
-    //isOperator ok
+    //isOperator - ok
     if (event.target.classList.contains("operator")) {
         clearAfter = false;
 
         if (secondNumber != "") {
         firstNumber = calculate(firstNumber, operator, secondNumber);
         secondNumber = "";
+        operator ="";
 
             if(isNaN(firstNumber)) {
                 output.textContent = firstNumber;
@@ -67,7 +76,7 @@ inputs.forEach((input) => {
 
             if (!isNaN(firstNumber) && !Number.isInteger(firstNumber)) {
             output.textContent = Number.parseFloat(firstNumber).toFixed(2);
-            } else output.textContent = firstNumber;
+            } else output.textContent = limitChar(firstNumber);
         }
 
         if (isFirstNumber === false && operator !="") {
@@ -82,18 +91,30 @@ inputs.forEach((input) => {
 
     }
 
-    // isNumber ok
+    // isNumber - ok
     if (event.target.classList.contains("number") && isFirstNumber === true) {
-        clearAfter = false;    
-        firstNumber += event.target.textContent;
-        output.textContent += event.target.textContent;
-        } else if (event.target.classList.contains("number") && isFirstNumber === false)  {
-            clearAfter = false; 
-            secondNumber += event.target.textContent;
+        clearAfter = false;
+        let numberLength = firstNumber.length;
+        if (numberLength <9) {
+            firstNumber += event.target.textContent;   
             output.textContent += event.target.textContent;
+        } else {
+            output.textContent +="";
+            firstNumber += "";   
         }
+    } else if (event.target.classList.contains("number") && isFirstNumber === false)  {
+            clearAfter = false; 
+            let numberLength = secondNumber.length + firstNumber.length + operator.length;
+            if (numberLength <9) {
+            output.textContent += event.target.textContent;
+            secondNumber += event.target.textContent;
+            } else {
+                output.textContent +="";
+                secondNumber += "";
+            }
+    }
     
-    //Equal ok
+    //Equal - ok
     if (event.target.id === "equal") {
         if (firstNumber != "" && operator !="" && secondNumber != "") {
             let total = calculate(firstNumber, operator, secondNumber);
@@ -104,7 +125,7 @@ inputs.forEach((input) => {
             if (!isNaN(total) && !Number.isInteger(total)) {
                 total = Number.parseFloat(total).toFixed(2);
                 output.textContent = total; 
-            } else output.textContent = total;
+            } else output.textContent = limitChar(total);
             firstNumber = "";
             secondNumber = "";
             isFirstNumber = true;
@@ -114,13 +135,13 @@ inputs.forEach((input) => {
             clearAfter = true;
         }
     }
-    //Clear ok
+    //Clear - ok
     if (event.target.id === "clr") {
         output.textContent = "";
         clearAfter = true;
     }
 
-    //Coder del
+    //del function - ok
     if (event.target.id === "del") {
         output.textContent = output.textContent.slice(0,-1);
         if (isFirstNumber === true) {
@@ -134,22 +155,17 @@ inputs.forEach((input) => {
             if (secondNumber != "") {
             secondNumber = secondNumber.slice(0, -1);
             }
-            
         }
-
     }
 
-    // + limiter le nombre de charactères à 9 dans l'output bar en mettant des exposants
-    // pour les résultats plus longs
-
-    //Percent ok
+    //Percent - ok
     if (event.target.id === "percent") {
         output.textContent += event.target.textContent;
         firstNumber = percent(firstNumber);
         output.textContent = firstNumber;
     }
 
-    //Coder point (doublons)
+    //Point (doublons) - ok
     if (event.target.id === "point") {
         if (isFirstNumber === true) {
             activeNumber = firstNumber;
@@ -163,11 +179,11 @@ inputs.forEach((input) => {
                 } else secondNumber = activeNumber;
         }
     }
-
-    //Coder doublons d'opérateurs
     
-
     //Coder keyboard support
+    document.addEventListener('keydown', (event) => {
+    console.log(event.key);
+});
 
 
 
