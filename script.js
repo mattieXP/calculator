@@ -112,7 +112,7 @@ const triggerCalc = function(key) {
             }
     }
     
-    //Equal - !!operator??
+    //Equal
     if (key === "equal") {
         if (firstNumber != "" && operator !="" && secondNumber != "") {
             let total = calculate(firstNumber, operator, secondNumber);
@@ -133,13 +133,13 @@ const triggerCalc = function(key) {
             clearAfter = true;
         }
     }
-    //Clear - ok
+    //Clear
     if (key === "clr") {
         output.textContent = "";
         clearAfter = true;
     }
 
-    //del function - ok
+    //del function
     if (key === "del") {
         output.textContent = output.textContent.slice(0,-1);
         if (isFirstNumber === true) {
@@ -156,14 +156,14 @@ const triggerCalc = function(key) {
         }
     }
 
-    //Percent - ok
+    //Percent
     if (key === "percent") {
         firstNumber = percent(firstNumber);
         firstNumber = String(firstNumber);
         output.textContent = firstNumber;
     }
 
-    //Point (doublons) - ok
+    //Point (doublons)
     if (key === "point") {
         if (isFirstNumber === true) {
             activeNumber = firstNumber;
