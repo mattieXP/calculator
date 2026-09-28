@@ -7,14 +7,17 @@ let isFirstNumber = true;
 let clearAfter = false;
 let activeNumber = firstNumber;
 
-//operations ok
+//operations
 const add = ((a,b) => a + b);
 const substract = ((a,b)=> a - b);
 const multiply = ((a,b) => a * b);
 const divide = ((a,b) => a / b);
 const percent = ((a) => a / 100);
 
-//calculate - ok
+//operator array
+const operatorArray = ["+", "-", "*", "/"];
+
+//calculate
 const calculate = ((a,b,c) => {
     a = Number(a);
     c = Number(c);
@@ -35,8 +38,6 @@ const calculate = ((a,b,c) => {
     }
     
 });
-// + limiter le nombre de charactères à 9 dans l'output bar en mettant des exposants
-    // pour les résultats plus longs
 
 const limitChar = function(output) {
     output = String(output);
@@ -46,12 +47,9 @@ const limitChar = function(output) {
     } else return output;
 }
 
-//Event listener
-inputs.forEach((input) => {
-    input.addEventListener('click', (event) => {
-    console.log(event.target.textContent);
-    
-    //clearAfter - ok
+const triggerCalc = function(key) {   
+
+//clearAfter
     if (clearAfter === true) {
         output.textContent = "";
         firstNumber = "";
@@ -60,14 +58,14 @@ inputs.forEach((input) => {
         isFirstNumber = true;
     }
 
-    //isOperator - ok
-    if (event.target.classList.contains("operator")) {
+    //isOperator
+    if (operatorArray.includes(key)) {
         clearAfter = false;
-
+        
         if (secondNumber != "") {
         firstNumber = calculate(firstNumber, operator, secondNumber);
         secondNumber = "";
-        operator ="";
+        operator = "";
 
             if(isNaN(firstNumber)) {
                 output.textContent = firstNumber;
@@ -82,40 +80,40 @@ inputs.forEach((input) => {
         if (isFirstNumber === false && operator !="") {
             output.textContent = output.textContent.slice(0, -1);
         } else if (isFirstNumber === true && operator !="") {
-            output.textContent += event.target.textContent;
+            output.textContent += key;
         }
 
-        operator = event.target.textContent;
-        output.textContent += event.target.textContent;
+        operator = key;
+        output.textContent += operator;
         isFirstNumber = false;
 
     }
 
-    // isNumber - ok
-    if (event.target.classList.contains("number") && isFirstNumber === true) {
+    // isNumber
+    if (!isNaN(Number(key)) && isFirstNumber === true) {
         clearAfter = false;
-        let numberLength = firstNumber.length;
+        let numberLength = output.textContent.length;
         if (numberLength <9) {
-            firstNumber += event.target.textContent;   
-            output.textContent += event.target.textContent;
+            firstNumber += key;   
+            output.textContent += key;
         } else {
             output.textContent +="";
             firstNumber += "";   
         }
-    } else if (event.target.classList.contains("number") && isFirstNumber === false)  {
+    } else if (!isNaN(Number(key)) && isFirstNumber === false)  {
             clearAfter = false; 
-            let numberLength = secondNumber.length + firstNumber.length + operator.length;
+            let numberLength = output.textContent.length;
             if (numberLength <9) {
-            output.textContent += event.target.textContent;
-            secondNumber += event.target.textContent;
+            output.textContent += key;
+            secondNumber += key;
             } else {
                 output.textContent +="";
                 secondNumber += "";
             }
     }
     
-    //Equal - ok
-    if (event.target.id === "equal") {
+    //Equal - !!operator??
+    if (key === "equal") {
         if (firstNumber != "" && operator !="" && secondNumber != "") {
             let total = calculate(firstNumber, operator, secondNumber);
             if(isNaN(total)) {
@@ -136,13 +134,13 @@ inputs.forEach((input) => {
         }
     }
     //Clear - ok
-    if (event.target.id === "clr") {
+    if (key === "clr") {
         output.textContent = "";
         clearAfter = true;
     }
 
     //del function - ok
-    if (event.target.id === "del") {
+    if (key === "del") {
         output.textContent = output.textContent.slice(0,-1);
         if (isFirstNumber === true) {
             firstNumber = firstNumber.slice(0,-1);
@@ -159,33 +157,72 @@ inputs.forEach((input) => {
     }
 
     //Percent - ok
-    if (event.target.id === "percent") {
-        output.textContent += event.target.textContent;
+    if (key === "percent") {
         firstNumber = percent(firstNumber);
+        firstNumber = String(firstNumber);
         output.textContent = firstNumber;
     }
 
     //Point (doublons) - ok
-    if (event.target.id === "point") {
+    if (key === "point") {
         if (isFirstNumber === true) {
             activeNumber = firstNumber;
         } else activeNumber = secondNumber;
 
         if (activeNumber.includes(".") === false) {
-            output.textContent += event.target.textContent;
-            activeNumber += event.target.textContent;
+            output.textContent += ".";
+            activeNumber += ".";
                 if (isFirstNumber === true) {
                     firstNumber = activeNumber;
                 } else secondNumber = activeNumber;
         }
     }
-    
-    //Coder keyboard support
-    document.addEventListener('keydown', (event) => {
-    console.log(event.key);
+}
+ 
+//Events listener
+inputs.forEach((input) => {
+
+    input.addEventListener('click', (event) => {
+    console.log(event.target.textContent);
+
+    if (event.target.id !== "") {
+    event = event.target.id;
+    } else event = event.target.textContent;
+
+    triggerCalc(event);
+    });
+
 });
 
+document.addEventListener('keydown', (event) => {
+    console.log(event.key);
+    let command = "";
+    if ((!isNaN(Number)(event.key)) || operatorArray.includes(event.key)) {
+        command = event.key;
+    } else {
+        switch (event.key) {
+            case "Enter":
+                command = "equal";
+                break;
+            case "Backspace" :
+                command = "del";
+                break;
+            case "Escape":
+                command = "clr";
+                break;
+            case "%":
+                command = "percent";
+                break;
+            case ".":
+                command = "point";
+                break;
+            default:
+                command = "";
 
-
-    });
+        }
+    }
+    if (command !=="" && command !==" ") {
+        triggerCalc(command);
+    }
+    
 });
